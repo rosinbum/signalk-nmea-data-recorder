@@ -48,9 +48,10 @@ module.exports = function (app) {
       app.setProviderStatus("Log directory not defined, plugin disabled");
       return;
     }
-    logDir = options.logdir;
-    logRotationInterval = options.interval;
-    context = options.context;
+    let logDir = options.logdir;
+    let logRotationInterval = options.interval;
+    let timestamp = options.timestamp;
+
 
     if (!fs.existsSync(logDir)) {
       // attempt creating the log directory
@@ -108,7 +109,7 @@ module.exports = function (app) {
 
       plugin.unsubscribes.push(
         stream.onValue((nmeaString) => {
-          writeNMEAData(nmeaString, logDir, logFileName);
+          writeNMEAData(nmeaString, logDir, logFileName, timestamp);
         }),
       );
     }
@@ -189,8 +190,8 @@ function loadSentences(app, plugin) {
     }, {});
 }
 
-function writeNMEAData(nmeaString, dir, fileName) {
-  fs.appendFile(path.join(dir, fileName), `${plugin.timestamp? `${moment.now()}, ` : ''}${nmeaString}\n`, (err) => {
+function writeNMEAData(nmeaString, dir, fileName, timestamp) {
+  fs.appendFile(path.join(dir, fileName), `${timestamp? `${moment.now()}, ` : ''}${nmeaString}\n`, (err) => {
     if (err) console.error(err);
   });
 }
