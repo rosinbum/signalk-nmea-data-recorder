@@ -6,21 +6,21 @@ $IIDPT,x.x,x.x,,*hh
 
  */
 // NMEA0183 Encoder DPT   $IIDPT,69.21,-0.001*60
-const nmea = require('../nmea.js')
-module.exports = function (app) {
+const nmea = require("../nmea.js");
+module.exports = function () {
   return {
-    sentence: 'DPT',
-    title: 'DPT - Depth',
+    sentence: "DPT",
+    title: "DPT - Depth",
     keys: [
-      'environment.depth.belowTransducer',
-      'environment.depth.transducerToKeel'
+      "environment.depth.belowTransducer",
+      "environment.depth.transducerToKeel",
     ],
-    f: function dpt (belowTransducer, transducerToKeel) {
+    f: function dpt(belowTransducer, transducerToKeel) {
       return nmea.toSentence([
-        '$IIDPT',
+        "$IIDPT",
         belowTransducer.toFixed(2),
-        transducerToKeel.toFixed(3)
-      ])
-    }
-  }
-}
+        transducerToKeel.toFixed(3),
+      ]);
+    },
+  };
+};
