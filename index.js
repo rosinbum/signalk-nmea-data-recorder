@@ -69,11 +69,11 @@ module.exports = function (app) {
     }
 
     // create a new logfile
-    rotateLogFile(new Date(), logFileName);
+    rotateLogFile(new Date(), logFileName, logDir);
 
     if (logRotationInterval > 0) {
       setInterval(() => {
-        rotateLogFile(new Date(), logFileName, true);
+        rotateLogFile(new Date(), logFileName, logDir, true);
       }, logRotationInterval * 1000);
     }
 
@@ -115,9 +115,14 @@ module.exports = function (app) {
     });
   };
 
-  plugin.stop = function () {
+  plugin.stop = function (options) {
+    if (typeof options.logdir === "undefined") {
+      app.setProviderStatus("Log directory not defined, plugin disabled");
+      return;
+    }
+    let logDir = options.logdir;
     // compress the log file
-    rotateLogFile(new Date(), logFileName, true);
+    rotateLogFile(new Date(), logFileName, logDir, true);
     plugin.unsubscribes.forEach((f) => f());
   };
 
@@ -138,7 +143,7 @@ function compressLogFile(logDir, fileName) {
   });
 }
 
-function rotateLogFile(time, logFileName, compressPrevious = false) {
+function rotateLogFile(time, logFileName, logDir, compressPrevious = false) {
   // update the log filename
   const oldLogFileName = logFileName;
   logFileName = "nmea0138-vdr."

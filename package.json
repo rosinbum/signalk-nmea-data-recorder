@@ -30,5 +30,5 @@
     "type": "git",
     "url": "git+https://github.com/rosinbum/signalk-nmea-data-recorder.git"
   },
-  "version": "0.0.8"
+  "version": "0.0.9"
 }
