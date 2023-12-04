@@ -8,12 +8,11 @@ module.exports = function (app) {
   var plugin = {
     unsubscribes: [],
   };
-  var logFileName = "nmea0183-vdr.txt";
 
-  plugin.id = "sk-nmea0183-vdr-all";
-  plugin.name = "NMEA0183 logging all";
+  plugin.id = "voyage-data-recorder";
+  plugin.name = "Voyage Data Recorder NMEA0183 format";
   plugin.description =
-    "Plugin to log voyage data into a NMEA0183 formatted file";
+    "Plugin to log voyage data into a NMEA0183 formatted file with optional timestamp. Does not log AIS";
   plugin.schema = {
     type: "object",
     title: "Conversions to NMEA0183 and logging into file non ais",
@@ -21,11 +20,6 @@ module.exports = function (app) {
       "If there is SK data for the conversion, generate and log the following NMEA0183 sentences from Signal K data:",
     properties: {},
   };
-  // plugin.schema.properties["logfilename"] = {
-  //   title: `Log file name`,
-  //   type: "string",
-  //   default: "/tmp/nmea.log",
-  // };
   plugin.schema.properties["logdir"] = {
     type: "string",
     title: "Data log file directory",
@@ -34,7 +28,7 @@ module.exports = function (app) {
   plugin.schema.properties["interval"] = {
     type: "number",
     title:
-        "Log rotation interval (in seconds). Value of zero disables log rotation.",
+      "Log rotation interval (in seconds). Value of zero disables log rotation.",
     default: 86400, // every 24 hours
   };
   plugin.schema.properties["timestamp"] = {
@@ -51,7 +45,6 @@ module.exports = function (app) {
     let logDir = options.logdir;
     let logRotationInterval = options.interval;
     let timestamp = options.timestamp;
-
 
     if (!fs.existsSync(logDir)) {
       // attempt creating the log directory
@@ -119,34 +112,6 @@ module.exports = function (app) {
         mapToNmea(plugin.sentences[name], options[getThrottlePropname(name)]);
       }
     });
-
-    function compressLogFile(logDir, fileName) {
-      let logPath = path.join(logDir, fileName);
-      const gzip = spawn("gzip", [logPath]);
-      gzip.on("close", (code) => {
-        if (code !== 0) {
-          console.error(
-            `Compressing file ${logPath} failed with exit code ${code}`,
-          );
-        }
-      });
-    }
-
-    function rotateLogFile(time, compressPrevious = false) {
-      // update the log filename
-      const oldLogFileName = logFileName;
-      logFileName = "nmea0138-vdr."
-        .concat(time.toISOString().replace(/:/g, "-"))
-        .concat(".log");
-
-      // gzip the old logfile
-      if (compressPrevious) {
-        compressLogFile(logDir, oldLogFileName);
-      }
-
-      // keep track of the current log file
-      fs.writeFileSync(path.join(logDir, ".current_log_file"), logFileName);
-    }
   };
 
   plugin.stop = function () {
@@ -159,6 +124,34 @@ module.exports = function (app) {
   buildSchemaFromSentences(plugin);
   return plugin;
 };
+
+function compressLogFile(logDir, fileName) {
+  let logPath = path.join(logDir, fileName);
+  const gzip = spawn("gzip", [logPath]);
+  gzip.on("close", (code) => {
+    if (code !== 0) {
+      console.error(
+        `Compressing file ${logPath} failed with exit code ${code}`,
+      );
+    }
+  });
+}
+
+function rotateLogFile(time, compressPrevious = false) {
+  // update the log filename
+  const oldLogFileName = logFileName;
+  logFileName = "nmea0138-vdr."
+    .concat(time.toISOString().replace(/:/g, "-"))
+    .concat(".log");
+
+  // gzip the old logfile
+  if (compressPrevious) {
+    compressLogFile(logDir, oldLogFileName);
+  }
+
+  // keep track of the current log file
+  fs.writeFileSync(path.join(logDir, ".current_log_file"), logFileName);
+}
 
 function buildSchemaFromSentences(plugin) {
   plugin.schema.properties[""];
@@ -191,9 +184,13 @@ function loadSentences(app, plugin) {
 }
 
 function writeNMEAData(nmeaString, dir, fileName, timestamp) {
-  fs.appendFile(path.join(dir, fileName), `${timestamp? `${moment.now()}, ` : ''}${nmeaString}\n`, (err) => {
-    if (err) console.error(err);
-  });
+  fs.appendFile(
+    path.join(dir, fileName),
+    `${timestamp ? `${moment.now()}, ` : ""}${nmeaString}\n`,
+    (err) => {
+      if (err) console.error(err);
+    },
+  );
 }
 
 const getThrottlePropname = (key) => `${key}_throttle`;
