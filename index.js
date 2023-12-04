@@ -8,6 +8,7 @@ module.exports = function (app) {
   var plugin = {
     unsubscribes: [],
   };
+  let logFileName = "current-vdr.txt";
 
   plugin.id = "voyage-data-recorder";
   plugin.name = "Voyage Data Recorder NMEA0183 format";
@@ -68,11 +69,11 @@ module.exports = function (app) {
     }
 
     // create a new logfile
-    rotateLogFile(new Date());
+    rotateLogFile(new Date(), logFileName);
 
     if (logRotationInterval > 0) {
       setInterval(() => {
-        rotateLogFile(new Date(), true);
+        rotateLogFile(new Date(), logFileName, true);
       }, logRotationInterval * 1000);
     }
 
@@ -116,7 +117,7 @@ module.exports = function (app) {
 
   plugin.stop = function () {
     // compress the log file
-    rotateLogFile(new Date(), true);
+    rotateLogFile(new Date(), logFileName, true);
     plugin.unsubscribes.forEach((f) => f());
   };
 
@@ -137,7 +138,7 @@ function compressLogFile(logDir, fileName) {
   });
 }
 
-function rotateLogFile(time, compressPrevious = false) {
+function rotateLogFile(time, logFileName, compressPrevious = false) {
   // update the log filename
   const oldLogFileName = logFileName;
   logFileName = "nmea0138-vdr."

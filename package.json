@@ -28,7 +28,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rosinbum/sk-nmea0183-vdr-all.git"
+    "url": "git+https://github.com/rosinbum/signalk-nmea-data-recorder.git"
   },
-  "version": "0.0.7"
+  "version": "0.0.8"
 }
