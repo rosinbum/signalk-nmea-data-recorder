@@ -5,7 +5,7 @@ const { spawn } = require("child_process");
 const moment = require("moment");
 
 module.exports = function (app) {
-  var plugin = {
+  const plugin = {
     unsubscribes: [],
   };
   let logFileName = "current-vdr.txt";
@@ -115,14 +115,7 @@ module.exports = function (app) {
     });
   };
 
-  plugin.stop = function (options) {
-    if (typeof options.logdir === "undefined") {
-      app.setProviderStatus("Log directory not defined, plugin disabled");
-      return;
-    }
-    let logDir = options.logdir;
-    // compress the log file
-    rotateLogFile(new Date(), logFileName, logDir, true);
+  plugin.stop = function () {
     plugin.unsubscribes.forEach((f) => f());
   };
 
