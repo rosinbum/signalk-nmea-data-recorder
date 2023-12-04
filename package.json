@@ -1,5 +1,5 @@
 {
-  "name": "sk-nmea0183-vdr-all",
+  "name": "signalk-nmea-data-recorder",
   "description": "Signal K plugin to log data into a NMEA0183 formatted file. ",
   "author": {
     "name": "joel.rosinbum@gmail.com"
@@ -30,5 +30,5 @@
     "type": "git",
     "url": "git+https://github.com/rosinbum/sk-nmea0183-vdr-all.git"
   },
-  "version": "0.0.4"
+  "version": "0.0.5"
 }
