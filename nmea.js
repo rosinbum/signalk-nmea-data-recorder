@@ -1,4 +1,4 @@
-const m_hex = [
+const mHex = [
   "0",
   "1",
   "2",
@@ -18,7 +18,7 @@ const m_hex = [
 ];
 
 function toSentence(parts) {
-  var base = parts.join(",");
+  const base = parts.join(",");
   return base + computeChecksum(base);
 }
 
@@ -29,15 +29,15 @@ function computeChecksum(sentence) {
   let c1 = sentence.charCodeAt(i);
   // process rest of characters, zero delimited
   for (i = 2; i < sentence.length; ++i) {
-    c1 = c1 ^ sentence.charCodeAt(i);
+    c1 ^= sentence.charCodeAt(i);
   }
-  return "*" + toHexString(c1);
+  return `*${toHexString(c1)}`;
 }
 
 function toHexString(v) {
-  let msn = (v >> 4) & 0x0f;
-  let lsn = (v >> 0) & 0x0f;
-  return m_hex[msn] + m_hex[lsn];
+  const msn = (v >> 4) & 0x0f;
+  const lsn = (v >> 0) & 0x0f;
+  return mHex[msn] + mHex[lsn];
 }
 
 function radsToDeg(radians) {
@@ -57,8 +57,8 @@ function mToNm(v) {
 }
 
 function padd(n, p, c) {
-  let pad_char = typeof c !== "undefined" ? c : "0";
-  let pad = new Array(1 + p).join(pad_char);
+  const padChar = typeof c !== "undefined" ? c : "0";
+  const pad = new Array(1 + p).join(padChar);
   return (pad + n).slice(-pad.length);
 }
 
@@ -80,9 +80,9 @@ function decimalDegreesToDegreesAndDecimalMinutes(degrees) {
     degrees *= -1;
   }
 
-  let degrees_out = Math.floor(degrees);
-  let minutes = (degrees % 1) * 60;
-  return [degrees_out, minutes, dir];
+  const degreesOut = Math.floor(degrees);
+  const minutes = (degrees % 1) * 60;
+  return [degreesOut, minutes, dir];
 }
 
 function toNmeaDegreesLatitude(inVal) {
@@ -92,18 +92,16 @@ function toNmeaDegreesLatitude(inVal) {
     use in an NMEA0183 sentence. (e.g. DDMM.MMMM)
   */
 
-  if (typeof inVal != "number" || inVal < -90 || inVal > 90) {
-    throw new Error("invalid input to toNmeaDegreesLatitude: " + inVal);
+  if (typeof inVal !== "number" || inVal < -90 || inVal > 90) {
+    throw new Error(`invalid input to toNmeaDegreesLatitude: ${inVal}`);
   }
 
-  let [degrees, minutes, dir] = decimalDegreesToDegreesAndDecimalMinutes(inVal);
+  const [degrees, minutes, dir] =
+    decimalDegreesToDegreesAndDecimalMinutes(inVal);
 
-  return (
-    padd(degrees.toFixed(0), 2) +
-    padd(minutes.toFixed(4), 7) +
-    "," +
-    (dir > 0 ? "N" : "S")
-  );
+  return `${padd(degrees.toFixed(0), 2) + padd(minutes.toFixed(4), 7)},${
+    dir > 0 ? "N" : "S"
+  }`;
 }
 
 function toNmeaDegreesLongitude(inVal) {
@@ -113,18 +111,16 @@ function toNmeaDegreesLongitude(inVal) {
     use in an NMEA0183 sentence. (e.g. DDDMM.MMMM)
   */
 
-  if (typeof inVal != "number" || inVal <= -180 || inVal > 180) {
-    throw new Error("invalid input to toNmeaDegreesLongitude: " + inVal);
+  if (typeof inVal !== "number" || inVal <= -180 || inVal > 180) {
+    throw new Error(`invalid input to toNmeaDegreesLongitude: ${inVal}`);
   }
 
-  let [degrees, minutes, dir] = decimalDegreesToDegreesAndDecimalMinutes(inVal);
+  const [degrees, minutes, dir] =
+    decimalDegreesToDegreesAndDecimalMinutes(inVal);
 
-  return (
-    padd(degrees.toFixed(0), 3) +
-    padd(minutes.toFixed(4), 7) +
-    "," +
-    (dir > 0 ? "E" : "W")
-  );
+  return `${padd(degrees.toFixed(0), 3) + padd(minutes.toFixed(4), 7)},${
+    dir > 0 ? "E" : "W"
+  }`;
 }
 
 function fixAngle(d) {
@@ -143,13 +139,13 @@ function radsToPositiveDeg(r) {
 }
 
 module.exports = {
-  toSentence: toSentence,
-  radsToDeg: radsToDeg,
-  msToKnots: msToKnots,
-  msToKM: msToKM,
-  toNmeaDegreesLatitude: toNmeaDegreesLatitude,
-  toNmeaDegreesLongitude: toNmeaDegreesLongitude,
-  fixAngle: fixAngle,
+  toSentence,
+  radsToDeg,
+  msToKnots,
+  msToKM,
+  toNmeaDegreesLatitude,
+  toNmeaDegreesLongitude,
+  fixAngle,
   radsToPositiveDeg,
   mToNm,
 };

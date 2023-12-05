@@ -18,13 +18,14 @@
     */
 
 // NMEA0183 Encoder MWVR   $INMWV,35.01,R,7.9,M,A*30
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "MWV",
     title: "MWV - Aparent Wind heading and speed",
     keys: ["environment.wind.angleApparent", "environment.wind.speedApparent"],
-    f: function (angle, speed) {
+    f(angle, speed) {
       return nmea.toSentence([
         "$IIMWV",
         nmea.radsToPositiveDeg(angle).toFixed(2),

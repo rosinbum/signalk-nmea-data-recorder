@@ -27,7 +27,7 @@ const {
   toSentence,
   toNmeaDegreesLatitude,
   toNmeaDegreesLongitude,
-} = require("../nmea.js");
+} = require("../nmea");
 
 module.exports = function () {
   return {
@@ -55,20 +55,22 @@ module.exports = function () {
       null, // navigation.gnss.differentialAge (= Age of differential GPS data record, Type 1 or Type 9. Null field when DGPS is not used)
       null, // navigation.gnss.differentialReference (= Reference station ID, range 0000-4095. A null field when any reference station ID is selected and no corrections are received)
     ],
-    f: function (
-      datetime8601,
+    f: function GGA(
+      myDatetime8601,
       position,
       gnssMethodQuality,
       gnssSatellites,
       gnssHorizontalDilution,
       gnssAntennaAltitude,
       gnssgeoidalSeparation,
-      gnssDifferentialAge,
-      gnssDifferentialReference,
+      myGnssDifferentialAge,
+      myGnssDifferentialReference,
     ) {
       let time = "";
       let ignssMethodQuality = 0;
-
+      let datetime8601 = myDatetime8601;
+      let gnssDifferentialAge = myGnssDifferentialAge;
+      let gnssDifferentialReference = myGnssDifferentialReference;
       if (
         !datetime8601 ||
         (typeof datetime8601 === "string" && datetime8601.trim() === "")
@@ -77,10 +79,10 @@ module.exports = function () {
       }
 
       if (datetime8601.length > 0) {
-        let datetime = new Date(datetime8601);
-        let hours = ("00" + datetime.getUTCHours()).slice(-2);
-        let minutes = ("00" + datetime.getUTCMinutes()).slice(-2);
-        let seconds = ("00" + datetime.getUTCSeconds()).slice(-2);
+        const datetime = new Date(datetime8601);
+        const hours = `00${datetime.getUTCHours()}`.slice(-2);
+        const minutes = `00${datetime.getUTCMinutes()}`.slice(-2);
+        const seconds = `00${datetime.getUTCSeconds()}`.slice(-2);
         time = hours + minutes + seconds;
       }
 
@@ -124,6 +126,8 @@ module.exports = function () {
           break;
         case "Simulator mode":
           ignssMethodQuality = 8;
+          break;
+        default:
           break;
       }
 

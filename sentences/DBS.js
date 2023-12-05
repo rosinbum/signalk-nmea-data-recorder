@@ -1,13 +1,14 @@
 // to verify
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "DBS",
     title: "DBS - Depth Below Surface",
     keys: ["environment.depth.belowSurface"],
     f: function mwv(depth) {
-      var feet = depth * 3.28084;
-      var fathoms = depth * 0.546807;
+      const feet = depth * 3.28084;
+      const fathoms = depth * 0.546807;
       return nmea.toSentence([
         "$IIDBS",
         feet.toFixed(1),

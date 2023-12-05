@@ -6,12 +6,13 @@ $PNKEP,01,x.x,N,x.x,K*hh
 */
 
 // $PNKEP,01,3.69,N,6.83,K*69
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     title: "PNKEP,01 - Target Polar speed",
     keys: ["performance.polarSpeed"],
-    f: function (polarSpeed) {
+    f(polarSpeed) {
       // console.log("Got Polar speed --------------------------------------------------");
       return nmea.toSentence([
         "$PNKEP",

@@ -34,7 +34,8 @@
       Example: $GPAPB,A,A,0.10,R,N,V,V,011,M,DEST,011,M,011,M*82
     */
 // to verify
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "APB",
@@ -45,7 +46,7 @@ module.exports = function () {
       "navigation.courseGreatCircle.nextPoint.bearingTrue",
       "navigation.courseGreatCircle.nextPoint.bearingMagnetic",
     ],
-    f: function (xte, originToDest, bearingTrue, bearingMagnetic) {
+    f(xte, originToDest, bearingTrue, bearingMagnetic) {
       return nmea.toSentence([
         "$IIAPB",
         "A",

@@ -7,7 +7,8 @@ $IIVTG,x.x,T,x.x,M,x.x,N,x.x,K,A*hh
  I__ I_True bottom heading
  */
 // NMEA0183 Encoder VTG   $IIVTG,224.17,T,224.17,M,12.95,N,23.98,K,A*3B
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "VTG",
@@ -17,11 +18,7 @@ module.exports = function () {
       "navigation.courseOverGroundTrue",
       "navigation.speedOverGround",
     ],
-    f: function (
-      courseOverGroundMagnetic,
-      courseOverGroundTrue,
-      speedOverGround,
-    ) {
+    f(courseOverGroundMagnetic, courseOverGroundTrue, speedOverGround) {
       return nmea.toSentence([
         "$IIVTG",
         nmea.radsToDeg(courseOverGroundTrue).toFixed(2),

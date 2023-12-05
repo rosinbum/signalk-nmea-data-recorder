@@ -5,15 +5,16 @@ $IIMTA,x.x,C*hh
   */
 // $IIMTA,34.80,C*3A
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "MTA",
     title: "MTA - Air temperature.",
     keys: ["environment.outside.temperature"],
-    f: function (temperature) {
+    f(temperature) {
       // console.log("Got MTA--------------------------");
-      var celcius = temperature - 273.15;
+      const celcius = temperature - 273.15;
       return nmea.toSentence(["$IIMTA", celcius.toFixed(2), "C"]);
     },
   };

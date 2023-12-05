@@ -8,7 +8,8 @@ $IIVHW,x .x,T,x.x,M,x.x,N,x.x,K*hh
 
 // NMEA0183 Encoder VHW   $IIVHW,201.1,T,209.2,M,6.5,N,12.0,K*6E
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "VHW",
@@ -19,7 +20,7 @@ module.exports = function () {
       "navigation.speedThroughWater",
     ],
     f: function vhw(headingTrue, magneticVariation, speedThroughWater) {
-      var headingMagnetic = headingTrue + magneticVariation;
+      let headingMagnetic = headingTrue + magneticVariation;
       if (headingMagnetic > Math.PI * 2) {
         headingMagnetic -= Math.PI * 2;
       }

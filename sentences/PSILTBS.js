@@ -11,12 +11,13 @@ Field Number:
 2 Checksum
 */
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     title: "PSILTBS - Garmin proprietary target boat speed",
     keys: ["performance.targetSpeed"],
-    f: function (tbs) {
+    f(tbs) {
       return nmea.toSentence(["$PSILTBS", nmea.msToKnots(tbs).toFixed(2), "N"]);
     },
   };

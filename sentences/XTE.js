@@ -4,12 +4,13 @@ $IIXTE,A,A,x.x,a,N,A*hh
  I_Cross-track error in miles, L= left, R= right
  */
 // to verify
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     title: "XTE - Cross-track error (w.r.t. Rhumb line)",
     keys: ["navigation.courseRhumbline.crossTrackError"],
-    f: function (crossTrackError) {
+    f(crossTrackError) {
       return nmea.toSentence([
         "$IIXTE",
         "A",

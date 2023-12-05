@@ -1,7 +1,8 @@
 /** test */
 
 // to verify
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     title: "PNKEP,99 - Debug",
@@ -14,7 +15,7 @@ module.exports = function () {
       "performance.polarSpeed",
       "performance.polarSpeedRatio",
     ],
-    f: function (
+    f(
       angleApparent,
       speedApparent,
       angleTrueWater,

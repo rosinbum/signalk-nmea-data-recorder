@@ -3,12 +3,13 @@
 */
 // $IIXDR,A,-0.7,D,PTCH,A,0.9,D,ROLL*13
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     title: "XDR (PTCH-ROLL) - Pitch and Roll",
     keys: ["navigation.attitude"],
-    f: function (attitude) {
+    f(attitude) {
       return nmea.toSentence([
         "$IIXDR",
         "A",

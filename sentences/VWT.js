@@ -8,13 +8,14 @@ $IIVWT,x.x,a,x.x,N,x.x,M,x.x,K*hh
 
 // NMEA0183 Encoder VWT   $IIVWT,86.71,a,12.58,N,6.47,M,23.29,K*45
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "VWT",
     title: "VWT - True wind speed relative to boat.",
     keys: ["environment.wind.angleTrueWater", "environment.wind.speedTrue"],
-    f: function (angleTrueWater, speedTrue) {
+    f(angleTrueWater, speedTrue) {
       return nmea.toSentence([
         "$IIVWT",
         nmea.radsToDeg(angleTrueWater).toFixed(2),

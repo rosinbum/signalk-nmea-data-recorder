@@ -6,7 +6,8 @@ $IIDPT,x.x,x.x,,*hh
 
  */
 // NMEA0183 Encoder DPT   $IIDPT,69.21,-0.001*60
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "DPT",

@@ -5,22 +5,25 @@ $IIHDG,x.x,,,,*hh
  */
 // NMEA0183 Encoder HDG   $IIHDG,206.71,,,,*7B
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "HDG",
     title: "HDG - Heading magnetic:.",
     keys: ["navigation.headingMagnetic", "navigation.magneticVariation"],
     defaults: [undefined, ""],
-    f: function hdg(headingMagnetic, magneticVariation) {
-      var magneticVariationDir = "";
+    f: function hdg(headingMagnetic, myMagneticVariation) {
+      let magneticVariationDir = "";
+      let magneticVariationDeg = "";
+      let magneticVariation = myMagneticVariation;
       if (magneticVariation !== "") {
         magneticVariationDir = "E";
         if (headingMagnetic < 0) {
           magneticVariationDir = "W";
           magneticVariation = Math.abs(magneticVariation);
         }
-        var magneticVariationDeg = nmea.radsToDeg(magneticVariation).toFixed(2);
+        magneticVariationDeg = nmea.radsToDeg(magneticVariation).toFixed(2);
       }
 
       return nmea.toSentence([

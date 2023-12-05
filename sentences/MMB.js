@@ -5,13 +5,14 @@ $IIMMB,x.x,I,x.x,B*hh
  I_ I_Atmospheric pressure in inches of mercury
  */
 // $IIMMB,29.6776,I,1.00,B*73
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "MMB",
     title: "MMB - Environment outside pressure",
     keys: ["environment.outside.pressure"],
-    f: function (pressure) {
+    f(pressure) {
       // console.log("Got MMB--------------------------");
       return nmea.toSentence([
         "$IIMMB",

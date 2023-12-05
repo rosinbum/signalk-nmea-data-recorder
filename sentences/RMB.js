@@ -10,7 +10,8 @@ $IIRMB,A,x.x,a,,,IIII.II,a,yyyyy.yy,a,x.x,x.x,x.x,A,a*hh
  I_Distance of cross-track error in miles
 */
 // to verify
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "RMB",
@@ -22,13 +23,7 @@ module.exports = function () {
       "navigation.courseRhumbline.nextPoint.distance",
       "navigation.courseRhumbline.bearingTrue",
     ],
-    f: function (
-      crossTrackError,
-      wpLatitude,
-      wpLongitude,
-      wpDistance,
-      bearingTrue,
-    ) {
+    f(crossTrackError, wpLatitude, wpLongitude, wpDistance, bearingTrue) {
       return nmea.toSentence([
         "$IIRMB",
         crossTrackError.toFixed(2),

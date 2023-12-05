@@ -6,7 +6,8 @@ $IIVPW,x.x,N,x.x,M*hh
 
 // NMEA0183 Encoder VPW   $IIVHW,6.5,N,12.64,M*48
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "VPW",

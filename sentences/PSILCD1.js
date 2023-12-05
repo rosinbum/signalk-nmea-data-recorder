@@ -1,4 +1,4 @@
-/*PSILCD1 - Proprietary polar boat speed sentence for Silva => Nexus => Garmin displays
+/* PSILCD1 - Proprietary polar boat speed sentence for Silva => Nexus => Garmin displays
 
 
            0     1     2
@@ -10,13 +10,14 @@ Field Number:
 2 Checksum
 */
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     title:
       "PSILCD1 - Send polar speed and target wind angle to Silva/Nexus/Garmin displays",
     keys: ["performance.polarSpeed", "performance.targetAngle"],
-    f: function (polarSpeed, targetAngle) {
+    f(polarSpeed, targetAngle) {
       return nmea.toSentence([
         "$PSILCD1",
         nmea.msToKnots(polarSpeed).toFixed(2),

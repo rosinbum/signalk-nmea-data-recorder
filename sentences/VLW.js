@@ -6,14 +6,15 @@ $IIVLW,x.x,N,x.x,N*hh
  */
 // NMEA0183 Encoder VLW   $IIVLW,9417.40,N,43.18,N*4C
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "VLW",
     title: "VLW - Total log and daily log",
     keys: ["navigation.log", "navigation.logTrip"],
-    f: function (logDistance, tripDistance) {
-      return toSentence([
+    f(logDistance, tripDistance) {
+      return nmea.toSentence([
         "$IIVLW",
         nmea.mToNm(logDistance).toFixed(2),
         "N",

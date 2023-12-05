@@ -10,7 +10,8 @@ $IIMWD,x.x,T,x.x,M,x.x,N,x.x,M*hh
  */
 
 // NMEA0183 Encoder MWD   $IIMWD,279.07,T,90.97,M,9.75,N,5.02,M*74
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "MWD",
@@ -20,8 +21,10 @@ module.exports = function () {
       "navigation.magneticVariation",
       "environment.wind.speedTrue",
     ],
-    f: function (directionTrue, magneticVariation, speedTrue) {
-      var directionMagnetic = nmea.fixAngle(directionTrue - magneticVariation);
+    f(directionTrue, magneticVariation, speedTrue) {
+      const directionMagnetic = nmea.fixAngle(
+        directionTrue - magneticVariation,
+      );
       return nmea.toSentence([
         "$IIMWD",
         nmea.radsToDeg(directionTrue).toFixed(2),

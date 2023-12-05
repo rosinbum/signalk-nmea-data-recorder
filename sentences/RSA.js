@@ -9,13 +9,14 @@ Field Number:
 5 Checksum
  */
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "RSA",
     title: "RSA - Rudder Sensor Angle",
     keys: ["steering.rudderAngle"],
-    f: function (rudderAngle) {
+    f(rudderAngle) {
       return nmea.toSentence([
         "$IIRSA",
         nmea.radsToDeg(rudderAngle).toFixed(2),

@@ -8,7 +8,8 @@ $PNKEP,03,x.x,x.x,x.x*hh
 */
 
 // to verify
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     title: "PNKEP,03 - Polar and VMG, and optimum angle.",
@@ -17,7 +18,7 @@ module.exports = function () {
       "performance.polarVelocityMadeGoodRatio",
       "performance.polarSpeedRatio",
     ],
-    f: function (targetAngle, polarVelocityMadeGoodRatio, polarSpeedRatio) {
+    f(targetAngle, polarVelocityMadeGoodRatio, polarSpeedRatio) {
       return nmea.toSentence([
         "$PNKEP",
         "03",

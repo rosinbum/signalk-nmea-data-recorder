@@ -3,12 +3,13 @@
 */
 // $IIXDR,P,1.0050,B,Barometer*13
 
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     title: "XDR (Barometer) - Atomospheric Pressure",
     keys: ["environment.outside.pressure"],
-    f: function (pressure) {
+    f(pressure) {
       return nmea.toSentence([
         "$IIXDR",
         "P",

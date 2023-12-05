@@ -29,7 +29,8 @@ const {
   toNmeaDegreesLatitude,
   toNmeaDegreesLongitude,
   radsToDeg,
-} = require("../nmea.js");
+} = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "RMC",
@@ -42,25 +43,26 @@ module.exports = function () {
       "navigation.magneticVariation",
     ],
     defaults: ["", undefined, undefined, undefined, ""],
-    f: function (datetime8601, sog, cog, position, magneticVariation) {
+    f(datetime8601, sog, cog, position, myMagneticVariation) {
       let time = "";
       let date = "";
+      let magneticVariation = myMagneticVariation;
       if (datetime8601.length > 0) {
-        let datetime = new Date(datetime8601);
-        let hours = ("00" + datetime.getUTCHours()).slice(-2);
-        let minutes = ("00" + datetime.getUTCMinutes()).slice(-2);
-        let seconds = ("00" + datetime.getUTCSeconds()).slice(-2);
+        const datetime = new Date(datetime8601);
+        const hours = `00${datetime.getUTCHours()}`.slice(-2);
+        const minutes = `00${datetime.getUTCMinutes()}`.slice(-2);
+        const seconds = `00${datetime.getUTCSeconds()}`.slice(-2);
 
-        let day = ("00" + datetime.getUTCDate()).slice(-2);
-        let month = ("00" + (datetime.getUTCMonth() + 1)).slice(-2); // months from 1-12
-        let year = ("00" + datetime.getUTCFullYear()).slice(-2);
+        const day = `00${datetime.getUTCDate()}`.slice(-2);
+        const month = `00${datetime.getUTCMonth() + 1}`.slice(-2); // months from 1-12
+        const year = `00${datetime.getUTCFullYear()}`.slice(-2);
         time = hours + minutes + seconds;
         date = day + month + year;
       }
-      var magneticVariationDir = "E";
+      let magneticVariationDir = "E";
       if (magneticVariation < 0) {
         magneticVariationDir = "W";
-        magneticVariation = magneticVariation * -1;
+        magneticVariation *= -1;
       }
       return toSentence([
         "$GPRMC",

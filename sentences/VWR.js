@@ -8,15 +8,17 @@ $IIVWR,x.x,a,x.x,N,x.x,M,x.x,K*hh
  */
 
 // NMEA0183 Encoder VWR   $IIVWR,42.01,R,14.11,N,7.26,M,26.14,K*75
-const nmea = require("../nmea.js");
+const nmea = require("../nmea");
+
 module.exports = function () {
   return {
     sentence: "VWR",
     optionKey: "VWR",
     title: "VWR - Apparent wind angle and speed",
     keys: ["environment.wind.speedApparent", "environment.wind.angleApparent"],
-    f: function (speedApparent, angleApparent) {
-      var windDirection = "R";
+    f(speedApparent, myAngleApparent) {
+      let windDirection = "R";
+      let angleApparent = myAngleApparent;
       if (angleApparent < 0) {
         angleApparent = -angleApparent;
         windDirection = "L";
