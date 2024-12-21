@@ -1,8 +1,9 @@
 {
   "name": "signalk-nmea-data-recorder",
   "description": "Signal K plugin to log data into a NMEA0183 formatted file. ",
+  "main": "dist/index.js",
   "author": {
-    "name": "joel.rosinbum@gmail.com"
+    "name": "Joel Rosinbum"
   },
   "contributors": [
     {
@@ -13,21 +14,30 @@
     }
   ],
   "dependencies": {
-    "baconjs": "^0.7.88",
+    "baconjs": "^1",
     "moment": "^2.29.4"
   },
   "devDependencies": {
-    "eslint": "^8.55.0",
-    "eslint-config-prettier": "^9.1.0",
+    "@signalk/server-api": "^2.3.0",
+    "@types/baconjs": "^1.0.0",
+    "@types/node": "^20.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.0",
-    "prettier": "^3.1.0"
+    "prettier": "^3.0.2",
+    "typescript": "^5.1.6"
   },
   "scripts": {
-    "lint": "eslint \"**/*.js\"",
-    "lint:fix": "eslint --fix \"**/*.js\"",
-    "pretty:write": "prettier --write \"**/*.{js,json}\"",
-    "pretty": "prettier --write \"**/*.{js,json}\""
+    "lint": "eslint \"**/*.{jsts},\"",
+    "lint:fix": "eslint --fix \"**/*.{js,ts}\"",
+    "pretty:write": "prettier --write \"**/*.{js,ts,json}\"",
+    "pretty": "prettier \"**/*.{js,ts,json}\"",
+    "watch": "tsc --watch",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "signalk-node-server-plugin"
